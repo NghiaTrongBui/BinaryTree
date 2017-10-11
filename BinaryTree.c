@@ -8,7 +8,7 @@ struct node{
 
 int CreateNode(Node** p, int data){
   (*p) = (Node*)malloc(sizeof(Node));
-		
+
   if(*p == NULL){
     return FALSE;
   }
@@ -26,13 +26,13 @@ int InsertNode(Node* root, int data){
   Node* p;
   if(!CreateNode(&p, data)){
     puts("Initialize pointer failed!");
-        
+
     return FALSE;
   }
-  
+
   if(data >= root->data){
     if(root->pright != NULL){
-      InsertNode(root->pright, data);	
+      InsertNode(root->pright, data);
     }
     else{
       root->pright = p;
@@ -56,29 +56,29 @@ Node* MaxNodeValue(const Node* root){
 
   p = root;
   while(p->pright != NULL){
-    p = p->pright;	
+    p = p->pright;
   }
 
-  return p;
+  return (Node*)p;
 }
 
 /* Min value of tree will be left outer */
 Node* MinNodeValue(const Node* root){
   const  Node* p;
-  
+
   p = root;
   while(p->pleft != NULL){
     p = p->pleft;
   }
 
-  return p;
+  return (Node*)p;
 }
 
 /* search data if found it will true contrary */
 int SearchNode(const Node* root, int data){
   const Node* p = NULL;
 
-  p = root;	
+  p = root;
   while(p != NULL){
     if(p->data == data){
       return TRUE;
@@ -92,7 +92,7 @@ int SearchNode(const Node* root, int data){
       }
     }
   }
-  
+
   return FALSE;
 }
 
@@ -104,7 +104,7 @@ Node* SearchParent(const Node* root, int data){
   p = root;
   while(p != NULL){
     if(p->data == data){
-      return p;
+      return (Node*)p;
     }
     else{
       tmp = p;
@@ -124,7 +124,7 @@ Node* SearchParent(const Node* root, int data){
 Node* SearchChild(const Node* root, int data){
   const Node* p;
 
-  p = root;	
+  p = root;
   while(p != NULL){
     if(p->data == data){
       break;
@@ -139,23 +139,23 @@ Node* SearchChild(const Node* root, int data){
     }
   }
 
-  return p;
+  return (Node*)p;
 }
 
 /* use recursive to count node */
 int CountNode(const Node* root){
   const Node* p;
   int count = 1;
-  
+
   p = root;
   if(p->pleft != NULL){
     count = count + CountNode(p->pleft);
-  }	
+  }
 
   if(p->pright != NULL){
     count = count + CountNode(p->pright);
   }
-  
+
   return count;
 }
 
@@ -191,24 +191,19 @@ void DeleteTree(Node* root){
 }
 
 int HighTree(const Node* root){
-  Node* p;
-  int i, j, rs;
+  if(root == NULL){
+    return 0;
+  }
+  else{
+    int ldepth = HighTree(root->pleft);
+    int rdepth = HighTree(root->pright);
 
-  i = j = 0;
-
-  p = root;
-  while(p != NULL){
-    i++;
-    p = p->pright;
+    if(ldeft > rdepth){
+      return ldeft;
+    }
+    else{
+      return rdepth;
+    }
   }
 
-  p = root;
-  while(p != NULL){
-    j++;
-    p = p->pleft;
-  }
-
-  rs = (i>j?i:j) - 1;
-
-  return rs;
 }
